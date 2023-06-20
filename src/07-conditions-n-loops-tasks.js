@@ -181,15 +181,16 @@ function isInsideCircle(circle, point) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(str) {
-  const set = [...new Set(str)];
-  for (const item of set) {
-    const ind = str.indexOf(item);
-    if (str.slice(ind + 1).indexOf(item) === -1) {
-      return item;
-    }
-  }
-  return null;
+function findFirstSingleChar(/* str */) {
+  throw new Error('Not implemented');
+  // const set = [...new Set(str)];
+  // for (const item of set) {
+  //   const ind = str.indexOf(item);
+  //   if (str.slice(ind + 1).indexOf(item) === -1) {
+  //     return item;
+  //   }
+  // }
+  // return null;
 }
 
 
@@ -215,21 +216,23 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-  if (a > b) {
-    [a, b] = [b, a];
-  }
-  if (isStartIncluded && isEndIncluded) {
-    return `[${a}, ${b}]`;
-  }
-  if (isStartIncluded) {
-    return `[${a}, ${b})`;
-  }
-  if (isEndIncluded) {
-    return `(${a}, ${b}]`;
-  }
-  return `(${a}, ${b})`;
+function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
+  throw new Error('Not implemented');
 }
+//   if (a > b) {
+//     [a, b] = [b, a];
+//   }
+//   if (isStartIncluded && isEndIncluded) {
+//     return `[${a}, ${b}]`;
+//   }
+//   if (isStartIncluded) {
+//     return `[${a}, ${b})`;
+//   }
+//   if (isEndIncluded) {
+//     return `(${a}, ${b}]`;
+//   }
+//   return `(${a}, ${b})`;
+// }
 
 
 /**
@@ -288,20 +291,6 @@ function reverseInteger(num) {
  */
 function isCreditCardNumber(/* ccn */) {
   throw new Error('Not implemented');
-  // let sum = 0;
-  // const strCcn = ccn.toString();
-  // const checkDigit = strCcn.slice(0, strCcn.length - 1);
-  // for (let i = 0; i < strCcn.length - 1; i += 1) {
-  //   if (i % 2 !== 0) {
-  //     sum += +strCcn[i];
-  //   } else {
-  //     sum += +strCcn[i] * 2;
-  //   }
-  // }
-  // String(sum).split('').reduce((a, b) => +b + a);
-  // const mod = sum % 10;
-  //
-  // return (mod && 10) - mod === checkDigit;
 }
 
 /**
