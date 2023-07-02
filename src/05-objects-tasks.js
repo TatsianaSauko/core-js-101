@@ -115,33 +115,86 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
+class SelectorClass {
+  constructor(value, elem) {
+    this.value = value;
+    this.elem = elem;
+  }
+
+  element(value) {
+    if (this.elem) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+    if (this.value) {
+      throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    }
+    return new SelectorClass(`${this.value}${value}`, this.elem);
+  }
+
+  id(value) {
+    if (this.value.includes('#')) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+    if (this.value.includes('.') || this.value.includes('[') || this.value.includes(':') || this.value.includes('::')) {
+      throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    }
+    return new SelectorClass(`${this.value}#${value}`, this.elem);
+  }
+
+  class(value) {
+    if (this.value.includes('[') || this.value.includes(':') || this.value.includes('::')) {
+      throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    }
+    return new SelectorClass(`${this.value}.${value}`, this.elem);
+  }
+
+  attr(value) {
+    if (this.value.includes(':') || this.value.includes('::')) {
+      throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    }
+    return new SelectorClass(`${this.value}[${value}]`, this.elem);
+  }
+
+  pseudoClass(value) {
+    if (this.value.includes('::')) {
+      throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    }
+    return new SelectorClass(`${this.value}:${value}`, this.elem);
+  }
+
+  pseudoElement(value) {
+    if (this.value.includes('::')) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+    return new SelectorClass(`${this.value}::${value}`, this.elem);
+  }
+
+  stringify() {
+    return this.value;
+  }
+}
+
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  element(value) {
+    return new SelectorClass(value, true);
   },
-
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    return new SelectorClass(`#${value}`);
   },
-
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    return new SelectorClass(`.${value}`);
   },
-
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    return new SelectorClass(`[${value}]`);
   },
-
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    return new SelectorClass(`:${value}`);
   },
-
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    return new SelectorClass(`::${value}`);
   },
-
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    return new SelectorClass(`${selector1.stringify()} ${combinator} ${selector2.stringify()}`);
   },
 };
 
